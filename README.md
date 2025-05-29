@@ -1,38 +1,34 @@
 <div align="center">
-<h1>Semantic Image Inversion and Editing using Rectified Stochastic Differential Equations</h1>
+<h1>Anchored Diffusion Language Model</h1>
 
-<a href='https://rf-inversion.github.io/'><img src='https://img.shields.io/badge/Project-Page-green'></a>
-<a href='https://arxiv.org/pdf/2410.10792'><img src='https://img.shields.io/badge/ArXiv-Preprint-red'></a>
+<a href='https://anchored-diffusion-llm.github.io/'><img src='https://img.shields.io/badge/Project-Page-green'></a>
+<a href='https://arxiv.org/pdf/2505.18456'><img src='https://img.shields.io/badge/ArXiv-Preprint-red'></a>
+[![GitHub](https://img.shields.io/github/stars/LituRout/ADLM?style=social)](https://github.com/LituRout/ADLM)
 </div>
 
 
-<!-- **[Code will be released here...]**   -->
+Diffusion Language Models (DLMs) promise parallel generation and bidirectional context, yet they underperform autoregressive (AR) models in both <em>likelihood modeling</em> and <em>generated text quality</em>. We identify that this performance gap arises when important tokens (e.g., key words or low-frequency words that anchor a sentence) are masked early in the forward process, limiting contextual information for accurate reconstruction. To address this, we introduce the <em>Anchored Diffusion Language Model (ADLM)</em>, a novel two-stage framework that first predicts distributions over important tokens via an anchor network, and then predicts the likelihoods of missing tokens conditioned on the anchored predictions. ADLM significantly improves test perplexity on LM1B and OpenWebText, achieving up to 25.4% gains over prior DLMs, and narrows the gap with strong AR baselines. It also achieves state-of-the-art performance in zero-shot generalization across seven benchmarks and surpasses AR models in MAUVE score, which marks the first time a DLM generates better human-like text than an AR model. Theoretically, we derive an Anchored Negative Evidence Lower Bound (ANELBO) objective and show that anchoring improves sample complexity and likelihood modeling. Beyond diffusion, anchoring boosts performance in AR models and enhances reasoning in math and logic tasks, outperforming existing chain-of-thought approaches.
 
 
-Rectified flows for image inversion and editing. Our approach efficiently inverts reference style images in (a) and (b) without requiring text descriptions of the images and applies desired edits based on new prompts (e.g. “a girl” or “a dwarf”). For a reference content image (e.g. a cat in (c) or a face in (d)), it performs semantic image editing  e.g. “ sleeping cat”) and stylization (e.g. “a photo of a cat in origmai style”) based on prompts, without leaking unwanted content from the reference image (input images have orange borders).
-
-![teaser](./data/main.png)
+![teaser](./data/main-v2.png)
 
 
 ## 🔥 Updates
-- **[2024.10.14]** [Paper](https://arxiv.org/pdf/2410.10792) is published on arXiv!
+- **[2025.05.24]** [Paper](https://arxiv.org/pdf/2505.18456) is published on arXiv!
 
 
 ## Citation
 
 ```
-@article{rout2024rfinversion,
-  title={Semantic Image Inversion and Editing using Rectified Stochastic Differential Equations},
-  author={Litu Rout and Yujia Chen and Nataniel Ruiz and Constantine Caramanis and Sanjay Shakkottai and Wen-Sheng Chu},
-  journal={arXiv preprint arXiv:2410.10792},
-  year={2024}
+@article{rout2025anchored,
+  title     = {Anchored Diffusion Language Model},
+  author    = {Rout, Litu and Caramanis, Constantine and Shakkottai, Sanjay},
+  booktitle = {arXiv preprint},
+  year      = {2025},
+  url       = {https://arxiv.org/pdf/2505.18456}
 }
 ```
 
 <!-- ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LituRout/RB-Modulation&type=Date)](https://star-history.com/#LituRout/RB-Modulation&Date) -->
-
-## Licenses
-
-Copyright © 2024, Google LLC. All rights reserved.
+[![Star History Chart](https://api.star-history.com/svg?repos=LituRout/ADLM&type=Date)](https://star-history.com/#LituRout/ADLM&Date) -->
