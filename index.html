@@ -90,23 +90,20 @@
     <p>Side-by-side rollouts show how the baseline masked diffusion language model (MDLM) and our anchored variant
       reveal tokens over time. Compare how quickly key words get unmasked and how fast tokens get generated when the
       anchor-guided prior is available.</p>
+
     <div class="video-comparison">
       <div class="video-card">
         <h3>MDLM Baseline</h3>
-        <video autoplay controls loop muted playsinline preload="auto">
-          <source src="./data/mdlm-h264.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <p>Without anchors, the standard MDLM sampler unmasks less informative words.</p>
+        <img src="./data/mdlm_reveal_animation.gif" alt="MDLM token reveal animation" class="token-gif">
+        <p>Without anchors, the standard MDLM sampler unmasks less informative words. This makes the decoding process
+          less efficient.</p>
       </div>
       <div class="video-card">
         <h3>ADLM (Ours)</h3>
-        <video autoplay controls loop muted playsinline preload="auto">
-          <source src="./data/adlm-h264.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <p>Anchor predictions reduce uncertainty early, allowing the denoiser to unmask important words (called anchor
-          tokens) after fewer refinement steps, which allows decoding many tokens simultaneously.</p>
+        <img src="./data/adlm_reveal_animation.gif" alt="ADLM token reveal animation" class="token-gif">
+        <p>Anchor predictions reduce uncertainty early in the unmasking process. This allows the denoiser to unmask
+          important words (called anchor
+          tokens) after a fewer unmasking steps, which allows decoding many tokens simultaneously.</p>
       </div>
     </div>
   </div>
