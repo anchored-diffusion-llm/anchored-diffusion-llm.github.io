@@ -128,7 +128,8 @@
       the masked tokens.
     <p>Supervising latent thoughts using anchor tokens:</p>
     <ol>
-      <li><strong>Denoising Transformer:</strong> Cross-entropy loss on all output tokens of the denoiser.
+      <li><strong>Denoising Transformer:</strong> Cross-entropy loss at mask positions computed using the output of the
+        denoiser.
         Note that the carry-over unmasking parameterization is used to enforce no loss on the already unmasked tokens.
       </li>
       <li><strong>Anchor Transformer:</strong> Supervise only the important anchor tokens.</li>
