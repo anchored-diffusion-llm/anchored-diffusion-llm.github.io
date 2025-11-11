@@ -11,8 +11,8 @@
   <div class="content">
     <h1><strong>Anchored Diffusion Language Model</strong></h1>
     <!-- <h2 style="text-align:center;">CVPR 2024</h2> -->
-    <p id="authors"><a href="https://liturout.github.io/" style="color:blue;">Litu Rout</a><a
-        href="https://caramanis.github.io/" style="color:blue;">Constantine Caramanis</a> <a
+    <p id="authors"><a href="https://liturout.github.io/" style="color:blue;">Litu Rout</a> &nbsp;|&nbsp; <a
+        href="https://caramanis.github.io/" style="color:blue;">Constantine Caramanis</a> &nbsp;|&nbsp; <a
         href="https://sites.google.com/view/sanjay-shakkottai/home" style="color:blue;">Sanjay Shakkottai</a><br>
       <span style="font-size: 20px"><br>
         <b> The University of Texas at Austin<br> </b>
@@ -22,13 +22,14 @@
     </p>
     <font size="+2">
       <p style="text-align: center;">
-        <a href="./data/adlm.pdf" target="_blank">[Paper]</a> &nbsp;&nbsp;&nbsp;&nbsp;
-        <!-- <a href="https://openreview.net/forum?id=Hu0FSOSEyS" target="_blank">[OpenReview]</a> &nbsp;&nbsp;&nbsp;&nbsp; -->
+        <a href="https://openreview.net/pdf?id=E8adS5srds" target="_blank">[Paper]</a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://openreview.net/forum?id=E8adS5srds" target="_blank">[OpenReview]</a> &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="https://arxiv.org/pdf/2505.18456" target="_blank">[ArXiv]</a> &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="https://github.com/LituRout/ADLM" target="_blank">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="./data/adlm-neurips-5min.pptx" target="_blank">[Slides]</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="https://www.dropbox.com/scl/fo/tht8ghwx67cop14pwxanw/AEqLT94IGe7q0RdXc6mPLws?rlkey=le8rp90axip06p2kb6bhgxdam&e=1&dl=0"
           target="_blank">[Model]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="./data/adlm-neurips-5min.pdf" target="_blank">[Slides]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="" target="_blank">[Talk]</a>&nbsp;&nbsp;&nbsp;&nbsp;
       </p>
     </font>
     <img src="./data/adlm-overview.png" class="teaser-gif" style="width:60%;">
@@ -86,10 +87,24 @@
   </div>
 
   <div class="content">
-    <h2 style="text-align:center;">Token Unmasking Visualization</h2>
+    <h2 style="text-align:left;">Inference: Standard DLM vs Anchored DLM</h2>
+    <p>We illustrate inference in a masked DLM versus our anchored DLM. The process starts with a canvas of fully
+      masked tokens (black squares). Over 4096 unmasking steps, both models progressively unmask tokens.</p>
+    <p>At an intermediate step (t = 30), the standard masked DLM has mainly uncovered less informative words such as
+      “the,” “in,” and “were,” leaving key parts of the sentence still masked. In contrast, our anchored DLM has
+      already revealed important tokens—“trusting,” “committee,” “security,” “secretary,” and “happened”—which convey
+      the core meaning of the paragraph. Revealing these tokens early helps guide the subsequent unmasking.</p>
+    <p>Anchoring offers two advantages:</p>
+    <ol>
+      <li>It prioritizes unmasking of important tokens early in the reverse process.</li>
+      <li>It helps the denoising transformer unmask many tokens in parallel.</li>
+    </ol>
+    <img src="./data/mdlm_vs_adlm.png" alt="Comparison of token unmasking: MDLM vs ADLM"
+      style="width:100%; display:block; margin:1em auto;">
+
     <p>Side-by-side rollouts show how the baseline masked diffusion language model (MDLM) and our anchored variant
-      reveal tokens over time. Compare how quickly key words get unmasked and how fast tokens get generated when the
-      anchor-guided prior is available.</p>
+      reveal tokens over time. Compare how quickly key words get unmasked and how fast tokens get generated when latent
+      thoughts are supervised via anchor tokens.</p>
 
     <div class="video-comparison">
       <div class="video-card">
@@ -102,10 +117,26 @@
         <h3>ADLM (Ours)</h3>
         <img src="./data/adlm_reveal_animation.gif" alt="ADLM token reveal animation" class="token-gif">
         <p>Anchor predictions reduce uncertainty early in the unmasking process. This allows the denoiser to unmask
-          important words (called anchor
-          tokens) after a fewer unmasking steps, which allows decoding many tokens simultaneously.</p>
+          important words (called anchor tokens) after fewer unmasking steps, enabling decoding of many tokens
+          simultaneously.</p>
       </div>
     </div>
+    <h2 style="text-align:left;"> Training: Anchored Diffusion Language Model</h2>
+    <p>ADLM is trained using anchored negative evidence lower bound (ANELBO) objective, with latent supervision through
+      anchor tokens. The training process involves jointly optimizing the models to predict the masked tokens and the
+      anchor tokens in two stages. This ensures that the denoising transformer has sufficient context to better predict
+      the masked tokens.
+    <p>Supervising latent thoughts using anchor tokens:</p>
+    <ol>
+      <li><strong>Denoising Transformer:</strong> Cross-entropy loss on all output tokens of the denoiser.
+        Note that the carry-over unmasking parameterization is used to enforce no loss on the already unmasked tokens.
+      </li>
+      <li><strong>Anchor Transformer:</strong> Supervise only the important anchor tokens.</li>
+    </ol>
+    </p>
+    <img src="./data/adlm_training.png" alt="ADLM Training Process" style="width:60%; display:block; margin:1em auto;">
+
+
   </div>
 
   <div class="content">
@@ -149,7 +180,7 @@
     <h2>Experiments: ADLM with Remasking Sampler</h2>
     <p><b>Evaluation of sample quality using the ADLM with remasking sampler (Wang et al., 2025a) on OWT. ADLM†
         outperforms state-of-the-art masked diffusion and flow-matching methods. For T = 2048 and T = 4096, ADLM
-        surpasses AR in MAUVE score (measures human-like text).</p>
+        surpasses AR in MAUVE score (measures human-like text).</b></p>
     <img class="summary-img" src="./data/adlm-remasking.png" style="width:80%;">
     <div style="margin-top: 1em; padding: 0.5em; background-color: #fef3c7; border-left: 5px solid #f59e0b;">
       <strong style="font-size: 1.1em;">
@@ -166,7 +197,7 @@
     <h2>Anchored Auto-Regressive Models</h2>
     <h3>Standard AR Training</h3>
     <p>Training of standard autoregressive (AR) models. A neural network is trained to predict the next token using
-      causal attention (leftto-right context). All tokens contribute equally to the training loss, and the model treats
+      causal attention (left-to-right context). All tokens contribute equally to the training loss, and the model treats
       the sequence uniformly without structural guidance.
     </p>
     <br>
@@ -179,6 +210,19 @@
     </p>
     <br>
     <img class="summary-img" src="./data/a2r.png" style="width:50%;">
+    <br>
+    <h3>Anchored Chain-of-Thought: Training and Inference</h3>
+    <p> Beyond diffusion, we extend anchoring to autoregressive LLMs.
+      The figure below illustrates the training and inference pipeline of our anchored chain-of-thought (ACoT) method.
+      During supervised fine-tuning, anchor tokens ([ANT], shown in blue) are extracted from the reasoning trace and
+      used to supervise latent thoughts.
+      The model learns to first predict these anchors before generating the full
+      reasoning trace, enabling out-of-order reasoning.
+      Our important observation is that anchoring enables look-ahead planning and out-of-order reasoning unlike standard
+      chain-of-thought methods.
+    </p>
+    <br>
+    <img class="summary-img" src="./data/anchored_cot.png" style="width:90%;">
     <br>
   </div>
   <div class="content">
@@ -202,7 +246,7 @@
   </div>
 
 
-  <div id="results2" class="content">
+  <div id="reasoning" class="content">
     <h2> Out-of-Order Reasoning using Anchored Chain-of-Thought</h2>
     <h3>Supervised Finetuning using Anchor Tokens ([ANT])</h3>
 
@@ -275,7 +319,7 @@
     </div>
   </div>
 
-  <div id="results2" class="content">
+  <div id="samples" class="content">
     <h2>Samples Generated Using ADLM</h2>
 
     <p><strong>Sampling Strategy:</strong> Remasking sampler with 4096 sampling steps</p>
